@@ -10,34 +10,17 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Student{
-  id Int @id @default(autoincrement())
-  name String
-  email String @unique
-  studentInfo StudentInfo?
-  questions Question[]
-  courses Course[]
-}
-
-model StudentInfo{
-  id Int @id @default(autoincrement())
-  phone String
-  address String
-  studentId Int @unique
-  student Student @relation(fields: [studentId], references: [id])
-}
-
-model Question{
+model Task{
   id Int @id @default(autoincrement())
   title String
-  content String?
-  studentId Int
-  student Student @relation(fields: [studentId], references: [id])
+  content String
+  finished Boolean @default(false)
+  categoryId Int? 
+  category Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
 }
 
-model Course{
+model Category{
   id Int @id @default(autoincrement())
   name String
-  description String?
-  students Student[]
+  tasks Task[]
 }
